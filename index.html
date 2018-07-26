@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Convert and copy to JSON</title>
+  <style id="jsbin-css">
+    * {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      background: #FAFAFA;
+    }
+
+    textarea {
+      flex-grow: 1;
+      padding: 15px;
+      font-family: 'ubuntu mono', 'source code pro', monospace;
+      /* width: 100%; */
+      border: 0px solid #999;
+      border-radius: 3px;
+      margin: 20px;
+      /*   height: 50vh; */
+    }
+
+    #controls {
+      display: flex;
+      justify-content: center;
+      padding: 20px 40px 40px 40px;
+    }
+
+    button {
+      cursor: pointer;
+      background: rgb(27, 149, 224);
+      color: white;
+      padding: 15px 20px;
+      border: 1px solid transparent;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background: rgb(24, 167, 255);
+    }
+
+    button.error {
+      cursor: not-allowed;
+      background: #666;
+      color: #ccc;
+    }
+
+    footer {
+      padding: 20px;
+      text-align: center;
+    }
+
+    footer p {
+      margin: 0;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+    }
+
+    .tweet {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .tweet > * {
+      margin: 0 5px;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/json5/0.5.1/json5.min.js"></script>
+</head>
+
+<body>
+  <textarea autofocus placeholder="Dump your JavaScript here (JSON5 supported)"></textarea>
+  <div id="controls">
+    <button title="Use ctrl+enter to copy">
+      Copy as JSON
+    </button>
+  </div>
+  <footer>
+    <p><span>Made by @rem</span>
+      <span class="tweet"><a href="https://twitter.com/rem" class="twitter-follow-button" data-show-count="false" target="_blank">Follow @rem</a>
+      <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://json.isthe.link" data-text="Quick tool for converting any JS to JSON for copy & paste fun"
+        data-via="rem" data-related="rem" target="_blank">Tweet</a></span>
+  </p>
+  </footer>
+  <!--boot js-->
+  <script id="jsbin-javascript" defer>
+    const button = document.querySelector('button');
+    const text = document.querySelector('textarea');
+
+    let json = null;
+
+    text.oninput = text.onchange = () => {
+      try {
+        json = JSON.stringify(JSON5.parse(text.value), '', 2);
+        button.disabled = false;
+        button.classList.remove('error');
+      } catch (e) {
+        console.log(e);
+        button.classList.add('error');
+        button.disabled = true;
+      }
+    }
+
+    text.onkeydown = event => {
+      if ((event.metaKey || event.ctrlKey) && event.keyCode === 13) {
+        button.onclick();
+      }
+    }
+
+    button.onclick = () => {
+      if (json) navigator.clipboard.writeText(json);
+    }
+
+  </script>
+  <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
+
+</body>
+
+</html>
