@@ -29,11 +29,15 @@
       padding: 15px;
       font-family: 'ubuntu mono', 'source code pro', monospace;
       /* width: 100%; */
-      border: 0px solid #999;
+      border: 1px solid #999;
       border-radius: 3px;
       margin: 20px;
       resize: none;
       /*   height: 50vh; */
+    }
+
+    textarea.error {
+      border: 1px solid red;
     }
 
     #controls {
@@ -112,9 +116,11 @@
         json = JSON.stringify(JSON5.parse(text.value), '', 2);
         button.disabled = false;
         button.classList.remove('error');
+        text.classList.remove('error');
       } catch (e) {
         console.log(e);
         button.classList.add('error');
+        text.classList.add('error');
         button.disabled = true;
       }
     }
